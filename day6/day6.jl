@@ -1,18 +1,15 @@
 using BenchmarkTools
-using OffsetArrays
 
 function nfish(ages, ndays)
-  count = OffsetArray(zeros(Int, 9), 0:8)
+  count = zeros(Int, 9)
   for a ∈ ages
-    count[a] += 1
+    count[a+1] += 1
   end
+  z = 1
   for i ∈ 1:ndays
-    n = count[0]
-    for j ∈ 0:7
-      count[j] = count[j+1]
-    end
-    count[8] = n
-    count[6] += n
+    n = count[z]
+    z = mod1(z+1, 9)
+    count[mod1(z+6, 9)] += n
   end
   sum(count)
 end
