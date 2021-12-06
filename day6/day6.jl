@@ -8,7 +8,9 @@ function nfish(ages, ndays)
   end
   for i ∈ 1:ndays
     n = count[0]
-    count[0:7] .= count[1:8]
+    for j ∈ 0:7
+      count[j] = count[j+1]
+    end
     count[8] = n
     count[6] += n
   end
