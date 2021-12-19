@@ -20,8 +20,8 @@ end
 
 x = parse.(Int, split(readline("data.txt"), ','))
 
-@info "Day 5 Part 1"
+@info "Day 6 Part 1"
 @btime nfish(x, 80)
 
-@info "Day 5 Part 2"
+@info "Day 6 Part 2"
 @btime nfish(x, 256)
