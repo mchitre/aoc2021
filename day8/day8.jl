@@ -15,6 +15,18 @@ end
 
 function part2(data)
   code(s) = |([1 << (c - 'a') for c ∈ s]...)
+  lut = Dict{Union{Int,NTuple{4,Int}},Int}(
+    2 => 1,
+    3 => 7,
+    4 => 4,
+    7 => 8,
+    (5, 1, 2, 2) => 2,
+    (5, 2, 3, 3) => 3,
+    (5, 1, 2, 3) => 5,
+    (6, 2, 3, 3) => 0,
+    (6, 1, 2, 3) => 6,
+    (6, 2, 3, 4) => 9
+  )
   sum_reading = 0
   for (d1, d2) ∈ data
     d1codes = code.(d1)
@@ -25,41 +37,10 @@ function part2(data)
     reading = 0
     for c ∈ d2codes
       n = count_ones(c)
-      if n == 2
-        d = 1
-      elseif n == 3
-        d = 7
-      elseif n == 4
-        d = 4
-      elseif n == 7
-        d = 8
-      elseif n == 5
-        s = tuple(count_ones.(c .& d174)...)
-        if s == (1, 2, 2)
-          d = 2
-        elseif s == (2, 3, 3)
-          d = 3
-        elseif s == (1, 2, 3)
-          d = 5
-        else
-          @error "Bad digit: $d1, $d2 => $n, $s"
-          continue
-        end
-      elseif n == 6
-        s = tuple(count_ones.(c .& d174)...)
-        if s == (2, 3, 3)
-          d = 0
-        elseif s == (1, 2, 3)
-          d = 6
-        elseif s == (2, 3, 4)
-          d = 9
-        else
-          @error "Bad digit: $d1, $d2 => $n, $s"
-          continue
-        end
+      if n ∈ keys(lut)
+        d = lut[n]
       else
-        @error "Bad digit: $d1, $d2 => $n"
-        continue
+        d = lut[tuple(n, count_ones.(c .& d174)...)]
       end
       reading = reading * 10 + d
     end
