@@ -37,11 +37,7 @@ function part2(data)
     reading = 0
     for c ∈ d2codes
       n = count_ones(c)
-      if n ∈ keys(lut)
-        d = lut[n]
-      else
-        d = lut[tuple(n, count_ones.(c .& d174)...)]
-      end
+      d = n ∈ keys(lut) ? lut[n] : lut[tuple(n, count_ones.(c .& d174)...)]
       reading = reading * 10 + d
     end
     sum_reading += reading
